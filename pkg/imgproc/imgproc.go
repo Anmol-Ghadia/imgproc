@@ -18,7 +18,7 @@ func Fromat(inpFile *os.File, outFile *os.File) error {
 
 	width := inputImg.Bounds().Dx()
 	height := inputImg.Bounds().Dy()
-	outputImg := image.NewRGBA(image.Rect(0, 0, width, height))
+	outputImg := image.NewNRGBA(image.Rect(0, 0, width, height))
 
 	for x := 0; x < width; x++ {
 		for y := 0; y < height; y++ {
@@ -37,7 +37,7 @@ func CropImg(inpFile *os.File, outFile *os.File, newWidth int, newHeight int) er
 		return throwDecodeError()
 	}
 	// Resize the image
-	outputImg := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
+	outputImg := image.NewNRGBA(image.Rect(0, 0, newWidth, newHeight))
 
 	for x := 0; x < newWidth; x++ {
 		for y := 0; y < newHeight; y++ {
@@ -75,7 +75,7 @@ func ResizeNearestNeighbor(inpFile *os.File, outFile *os.File, newWidth int, new
 	scaleY := float64(height) / float64(newHeight)
 
 	// Create a new blank image with the new dimensions
-	outputImg := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
+	outputImg := image.NewNRGBA(image.Rect(0, 0, newWidth, newHeight))
 
 	for x := 0; x < newWidth; x++ {
 		for y := 0; y < newHeight; y++ {
@@ -100,7 +100,7 @@ func throwDecodeError() error {
 }
 
 // Writes the image to file based on file extension
-func writeImage(outFile *os.File, outputImg *image.RGBA) {
+func writeImage(outFile *os.File, outputImg *image.NRGBA) {
 	if getFileExtension(outFile.Name(), 3) == "png" {
 
 		png.Encode(outFile, outputImg)
