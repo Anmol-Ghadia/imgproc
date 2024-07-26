@@ -10,6 +10,27 @@ import (
 )
 
 // returns the average pixel value as RGB
+func Fromat(inpFile *os.File, outFile *os.File) error {
+	inputImg, _, err := image.Decode(inpFile)
+	if err != nil {
+		return throwDecodeError()
+	}
+
+	width := inputImg.Bounds().Dx()
+	height := inputImg.Bounds().Dy()
+	outputImg := image.NewRGBA(image.Rect(0, 0, width, height))
+
+	for x := 0; x < width; x++ {
+		for y := 0; y < height; y++ {
+			outputImg.Set(x, y, inputImg.At(x, y))
+		}
+	}
+
+	writeImage(outFile, outputImg)
+	return nil
+}
+
+// returns the average pixel value as RGB
 func CropImg(inpFile *os.File, outFile *os.File, newWidth int, newHeight int) error {
 	inputImg, _, err := image.Decode(inpFile)
 	if err != nil {
