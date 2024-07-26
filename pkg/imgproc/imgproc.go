@@ -3,11 +3,8 @@ package imgproc
 import (
 	"errors"
 	"image"
-
-	_ "image/gif"
 	"image/jpeg"
-	_ "image/jpeg"
-	_ "image/png"
+	"image/png"
 
 	"os"
 )
@@ -16,7 +13,7 @@ import (
 func CropImg(inpFile *os.File, outFile *os.File, newWidth int, newHeight int) error {
 	inputImg, _, err := image.Decode(inpFile)
 	if err != nil {
-		return errors.New("decode error")
+		return throwDecodeError()
 	}
 	// Resize the image
 	outputImg := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
@@ -27,7 +24,7 @@ func CropImg(inpFile *os.File, outFile *os.File, newWidth int, newHeight int) er
 		}
 	}
 
-	jpeg.Encode(outFile, outputImg, nil)
+	writeImage(outFile, outputImg)
 	return nil
 }
 
@@ -35,9 +32,8 @@ func CropImg(inpFile *os.File, outFile *os.File, newWidth int, newHeight int) er
 func Inspect(f *os.File) (formatString string, x int, y int, e error) {
 
 	config, format, err := image.DecodeConfig(f)
-
 	if err != nil {
-		return "", 0, 0, errors.New("error decoding image")
+		return "", 0, 0, throwDecodeError()
 	}
 
 	return format, config.Width, config.Height, nil
@@ -47,7 +43,7 @@ func Inspect(f *os.File) (formatString string, x int, y int, e error) {
 func ResizeNearestNeighbor(inpFile *os.File, outFile *os.File, newWidth int, newHeight int) error {
 	inputImg, _, err := image.Decode(inpFile)
 	if err != nil {
-		return errors.New("decode error")
+		return throwDecodeError()
 	}
 
 	width := inputImg.Bounds().Dx()
@@ -72,6 +68,41 @@ func ResizeNearestNeighbor(inpFile *os.File, outFile *os.File, newWidth int, new
 		}
 	}
 
-	jpeg.Encode(outFile, outputImg, nil)
+	writeImage(outFile, outputImg)
 	return nil
+}
+
+// === Helpers ===
+
+func throwDecodeError() error {
+	return errors.New("error in decoding image")
+}
+
+// Writes the image to file based on file extension
+func writeImage(outFile *os.File, outputImg *image.RGBA) {
+	if getFileExtension(outFile.Name(), 3) == "png" {
+
+		png.Encode(outFile, outputImg)
+
+	} else if getFileExtension(outFile.Name(), 3) == "jpg" ||
+		getFileExtension(outFile.Name(), 4) == "jpeg" {
+
+		jpeg.Encode(outFile, outputImg, nil)
+	}
+}
+
+// returns the file extension excluding the dot (e.g., "png")
+func getFileExtension(fileName string, extensionNameLength int) string {
+	if len(fileName) < extensionNameLength+1 {
+		return ""
+	}
+
+	// Check dot exists where expected
+	if fileName[len(fileName)-(extensionNameLength+1):len(fileName)-extensionNameLength] != "." {
+		return ""
+	}
+
+	// Get the file extension from the end of the fileName
+	ext := fileName[len(fileName)-extensionNameLength:]
+	return ext
 }

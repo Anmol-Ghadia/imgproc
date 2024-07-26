@@ -11,3 +11,7 @@ func TestAdd(t *testing.T) {
 		t.Errorf("got %q, wanted %q", got, want)
 	}
 }
+
+func TestInspect(t *testing.T) {
+
+}
