@@ -9,10 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cropCmd = &cobra.Command{
-	Use: "crop",
+var resizeCmd = &cobra.Command{
+	Use: "resize",
 	// Aliases: []string{"rev"},
-	Short: "crops the image and saves to a new location, input output width height",
+	Short: "resizes the image and saves to a new location, input output width height",
 	Args:  cobra.ExactArgs(4),
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -44,7 +44,7 @@ var cropCmd = &cobra.Command{
 		}
 		defer outFile.Close()
 
-		if imgproc.CropImg(inFile, outFile, width, height) != nil {
+		if imgproc.ResizeNearestNeighbor(inFile, outFile, width, height) != nil {
 			fmt.Printf("Error resizing\n")
 			return
 		}
@@ -54,5 +54,5 @@ var cropCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(cropCmd)
+	rootCmd.AddCommand(resizeCmd)
 }
