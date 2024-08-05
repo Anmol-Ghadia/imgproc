@@ -111,6 +111,75 @@ func TestResize1(t *testing.T) {
 
 }
 
+func TestCrop1(t *testing.T) {
+	outputFile := "output/crop/flower_450x500.jpg"
+	outputImage, err := openJpegImage(outputFile)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+	expectedFile := "expected/crop/flower_450x500.jpg"
+	ExpectedImage, err := openJpegImage(expectedFile)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+	err = compareImage(outputImage, ExpectedImage)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+}
+
+func TestCrop2(t *testing.T) {
+	outputFile := "output/crop/bird_600x256.png"
+	outputImage, err := openPngImage(outputFile)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+	expectedFile := "expected/crop/bird_600x256.png"
+	ExpectedImage, err := openPngImage(expectedFile)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+	err = compareImage(outputImage, ExpectedImage)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+}
+
+func TestMulti1(t *testing.T) {
+	outputFile := "output/multi/flower_450x500.png"
+	outputImage, err := openPngImage(outputFile)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+	expectedFile := "expected/multi/flower_450x500.png"
+	ExpectedImage, err := openPngImage(expectedFile)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+	err = compareImage(outputImage, ExpectedImage)
+	if err != nil {
+		t.Errorf("Error: %s\n", err.Error())
+		return
+	}
+
+}
+
 func compareImage(out image.Image, expected image.Image) error {
 	if out.Bounds().Dx() != expected.Bounds().Dx() {
 		return errors.New("Image width does not match")
