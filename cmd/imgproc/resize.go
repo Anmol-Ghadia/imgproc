@@ -32,6 +32,16 @@ var resizeCmd = &cobra.Command{
 			return
 		}
 
+		// Check bounds
+		if width <= 0 {
+			fmt.Printf("Width out of bounds, expected: 0<width, given: 0<%v\n", width)
+			return
+		}
+		if height <= 0 {
+			fmt.Printf("Height out of bounds, expected: 0<height, given: 0<%v\n", height)
+			return
+		}
+
 		// open input file
 		inFilePath := args[0]
 		inFile, err := os.Open(inFilePath)
