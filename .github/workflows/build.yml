@@ -21,12 +21,15 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v5
       with:
         go-version: '1.22'
+    
+    - name: Install dependencies
+      run: go get .
 
     - name: Build
       run: |
@@ -37,4 +40,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: imgproc-binaries
-        path: imgproc-linux-amd64
+        path: ./imgproc-linux-amd64
