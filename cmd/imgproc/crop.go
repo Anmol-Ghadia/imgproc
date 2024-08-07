@@ -66,7 +66,7 @@ var cropCmd = &cobra.Command{
 
 		// process image
 		if imgproc.CropImg(inFile, outFile, width, height) != nil {
-			fmt.Printf("Error resizing\n")
+			fmt.Printf("Error cropping\n")
 			return
 		}
 

@@ -56,6 +56,7 @@ func Inspect(f *os.File) (formatString string, x int, y int, e error) {
 		return "", 0, 0, throwDecodeError()
 	}
 
+	f.Seek(0, 0)
 	return format, config.Width, config.Height, nil
 }
 
