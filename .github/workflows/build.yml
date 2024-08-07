@@ -3,10 +3,10 @@ name: Build Go CLI
 on:
   push:
     branches:
-      - release-workflow
+      - '*'
   pull_request:
     branches:
-      - release-workflow
+      - '*'
   
 env:
   name: imgproc
