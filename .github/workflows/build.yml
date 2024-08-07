@@ -8,9 +8,6 @@ on:
     branches:
       - '*'
 
-env:
-  name: imgproc
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,12 +28,12 @@ jobs:
     - name: Build
       run: |
         GOOS=${{ matrix.os == 'ubuntu-latest' && 'linux' || 'windows' }}
-        GOARCH=amd64 go build -o ${ env.name }-${GOOS}-${GOARCH} ./cmd/${ env.name }
+        GOARCH=amd64 go build -o imgproc-${GOOS}-${GOARCH} ./cmd/imgproc
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${ env.name }-binaries
         path: |
-          ${ env.name }-linux-amd64
-          ${ env.name }-windows-amd64.exe
+          imgproc-linux-amd64
+          imgproc-windows-amd64.exe
