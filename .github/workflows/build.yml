@@ -31,13 +31,11 @@ jobs:
     - name: Install dependencies
       run: go get .
 
-    - name: Build
-      run: |
-        GOOS=${{ matrix.os == 'ubuntu-latest' }}
-        GOARCH=amd64 go build -o imgproc-${GOOS}-${GOARCH}
-
+    - name: build
+      run: GOOS=linux GOARCH=386 go build -o imgproc-linux-x86
+      
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: imgproc-binaries
-        path: ./imgproc-linux-amd64
+        path: ./imgproc-linux-x86
