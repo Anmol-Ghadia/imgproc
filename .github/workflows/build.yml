@@ -3,10 +3,13 @@ name: Build Go CLI
 on:
   push:
     branches:
-      - '*'
+      - release-workflow
   pull_request:
     branches:
-      - '*'
+      - release-workflow
+  
+env:
+  name: imgproc
 
 jobs:
   build:
@@ -14,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
 
     steps:
     - name: Checkout code
@@ -27,13 +30,11 @@ jobs:
 
     - name: Build
       run: |
-        GOOS=${{ matrix.os == 'ubuntu-latest' && 'linux' || 'windows' }}
-        GOARCH=amd64 go build -o imgproc-${GOOS}-${GOARCH} ./cmd/imgproc
+        GOOS=${{ matrix.os == 'ubuntu-latest' }}
+        GOARCH=amd64 go build -o imgproc-${GOOS}-${GOARCH}
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${ env.name }-binaries
-        path: |
-          imgproc-linux-amd64
-          imgproc-windows-amd64.exe
+        name: imgproc-binaries
+        path: imgproc-linux-amd64
