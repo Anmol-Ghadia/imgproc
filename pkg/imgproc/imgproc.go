@@ -5,7 +5,6 @@ import (
 	"image"
 	"image/jpeg"
 	"image/png"
-
 	"os"
 )
 
@@ -30,7 +29,7 @@ func Fromat(inpFile *os.File, outFile *os.File) error {
 	return nil
 }
 
-// returns the average pixel value as RGB
+// Crops the image starting at 0,0
 func CropImg(inpFile *os.File, outFile *os.File, newWidth int, newHeight int) error {
 	inputImg, _, err := image.Decode(inpFile)
 	if err != nil {

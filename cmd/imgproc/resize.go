@@ -16,12 +16,15 @@ var resizeCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(4),
 	Run: func(cmd *cobra.Command, args []string) {
 
+		// read width
 		width, err := strconv.Atoi(args[2])
 		if err != nil {
 			// Handle the error if the conversion fails
 			fmt.Printf("Width is not a number\n")
 			return
 		}
+
+		// read height
 		height, err := strconv.Atoi(args[3])
 		if err != nil {
 			// Handle the error if the conversion fails
@@ -29,6 +32,7 @@ var resizeCmd = &cobra.Command{
 			return
 		}
 
+		// open input file
 		inFilePath := args[0]
 		inFile, err := os.Open(inFilePath)
 		if err != nil {
@@ -37,6 +41,7 @@ var resizeCmd = &cobra.Command{
 		}
 		defer inFile.Close()
 
+		// create output file
 		outFile, err := os.Create(args[1])
 		if err != nil {
 			fmt.Println("Error writing output file:", err)
@@ -44,6 +49,7 @@ var resizeCmd = &cobra.Command{
 		}
 		defer outFile.Close()
 
+		// Process image
 		if imgproc.ResizeNearestNeighbor(inFile, outFile, width, height) != nil {
 			fmt.Printf("Error resizing\n")
 			return
