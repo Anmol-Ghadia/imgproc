@@ -16,7 +16,7 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: imgproc-binaries
+          name: imgproc-binaries.zip
       
       # Debugging
       - name: List Downloaded Files
