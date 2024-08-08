@@ -1,4 +1,6 @@
 # Imgproc - Image processing utility
+[Download](https://github.com/Anmol-Ghadia/imgproc/releases)
+
 imgproc is a powerful command-line tool designed to perform a variety of operations on images and batches of images with ease. Built with Go, this CLI utility offers a streamlined and efficient way to manipulate, process, and manage your images directly from the terminal.
 
 ## Features

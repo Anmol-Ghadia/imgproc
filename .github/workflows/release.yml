@@ -1,45 +1,46 @@
-name: Build Go CLI
+name: Release
 
 on:
   push:
     tags:
-      - 'v*'
-
-env:
-  name: imgproc
+      - "v*"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  tests:
+    uses: ./.github/workflows/test.yml
 
+  build:
+    needs: tests
+
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [ubuntu-latest]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.22'
-    
-    - name: Install dependencies
-      run: go get .
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
 
-    - name: build
-      run: GOOS=linux GOARCH=386 go build -o imgproc-linux-x86
-      
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: Build-Artifacts
-        path: ./imgproc-linux-x86
-  
+      - name: Install dependencies
+        run: go get .
+
+      - name: build
+        run: GOOS=linux GOARCH=386 go build -o imgproc-linux-x86
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-Artifacts
+          path: ./imgproc-linux-x86
+
   release:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: write
 
@@ -54,11 +55,12 @@ jobs:
         with:
           name: Build-Artifacts
           path: build
-      
-      # Debugging
+
+      # For Debugging
       - name: List Downloaded Files
         run: ls -R ./
 
+      # Combine all binaries, Temp !!!
       - run: zip -r imgproc-binaries.zip build/
 
       - name: Create Release
@@ -71,8 +73,8 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             Changes in this Release
-            - First Change
-            - Second Change
+            - Add Notes Here
+            - TODO !!!
           draft: true
           prerelease: true
       - name: Upload Release Assets
@@ -84,4 +86,3 @@ jobs:
           asset_path: imgproc-binaries.zip
           asset_name: imgproc-binaries.zip
           asset_content_type: application/zip
-          
