@@ -1,7 +1,8 @@
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
 
 name: Create Release
 
@@ -17,7 +18,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: imgproc-binaries
-        
+      
+      # Debugging
+      - name: List Downloaded Files
+        run: ls -R imgproc-binaries
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -36,7 +41,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./imgproc-linux-x86
+          asset_path: build/imgproc-linux-x86
           asset_name: imgproc-linux-x86
           asset_content_type: binary
           
