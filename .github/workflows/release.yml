@@ -1,8 +1,7 @@
 on:
-  workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
+  push:
+    tags:
+      - 'v*'
 
 name: Create Release
 
