@@ -6,11 +6,11 @@ on:
       - "v*"
 
 jobs:
-  tests:
+  test:
     uses: ./.github/workflows/test.yml
 
   build:
-    needs: tests
+    needs: test
 
     runs-on: ubuntu-latest
     strategy:
