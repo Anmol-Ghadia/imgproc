@@ -15,8 +15,8 @@ jobs:
 
       - name: Download Artifact
         uses: actions/download-artifact@v4
-        # with:
-        #   name: build-artifact
+        with:
+          name: imgproc-binaries
         
       - name: Create Release
         id: create_release
