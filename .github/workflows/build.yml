@@ -38,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: imgproc-binaries
-        path: build/imgproc-linux-x86
+        path: ./imgproc-linux-x86
