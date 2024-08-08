@@ -57,7 +57,7 @@ jobs:
       
       # Debugging
       - name: List Downloaded Files
-        run: ls -R imgproc-binaries
+        run: ls -R ./
 
       - name: Create Release
         id: create_release
