@@ -2,12 +2,9 @@ name: Build Go CLI
 
 on:
   push:
-    branches:
-      - '*'
-  pull_request:
-    branches:
-      - '*'
-  
+    tags:
+      - 'v*'
+
 env:
   name: imgproc
 
@@ -37,5 +34,50 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: imgproc-binaries
+        name: Build-Artifacts
         path: ./imgproc-linux-x86
+  
+  release:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build-Artifacts
+          path: build
+      
+      # Debugging
+      - name: List Downloaded Files
+        run: ls -R imgproc-binaries
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: true
+          prerelease: true
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/imgproc-binaries.zip
+          asset_name: imgproc-binaries.zip
+          asset_content_type: application/zip
+          
