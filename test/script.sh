@@ -20,6 +20,7 @@ mkdir test/output/multi -p
 go run main.go crop test/input/flower_720x720.jpg test/output/multi/flower_450x500.png 450 500
 
 # TODO !!! Add tests here
+# go run main.go kernelBlur test/input/bird_1280x720.png test/output/format/bird_1280x720.png test/output/kernelOne.txt
 
 # Compare Results
 go test test/imgproc_test.go -v ./..
